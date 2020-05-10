@@ -9,26 +9,69 @@
 import XCTest
 @testable import iTunesRSSProject
 
-class iTunesRSSProjectTests: XCTestCase {
+class MockViewModel: ViewModelProtocol {
+    private var cache = NSCache<NSString, UIImage>()
+    private var albums: [Results]?
+    
+    init(urlString: String) {
+        if let url = URL(string: urlString) {
+            fetchTop100Albums(url: url)
+        }
+    }
+    
+    func fetchTop100Albums(url: URL) {
+        NetworkingManager.shared.getAlbums(url: url) { (albums, err) in
+            if let error = err {
+                // TODO: create alert in view somehow
+            } else if let albumList = albums {
+                self.albums = albumList
+            }
+        }
+    }
+    
+    func fetchAlbum(index: Int) -> AlbumViewModel? {
+        if let album = albums?[index] {
+            return AlbumViewModel(album: album)
+        } else {
+            return nil
+        }
+    }
+    
+    func getCache() -> NSCache<NSString, UIImage> {
+        return cache
+    }
+    
+    func getAlbumCount() -> Int? {
+        return albums?.count
+    }
+}
 
+class iTunesRSSTests: XCTestCase {
+    
+    var viewModel: MockViewModel!
+    
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        viewModel = MockViewModel(urlString: Bundle.main.path(forResource: "iTunesResultJSON", ofType: "json")!)
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testAlbumsCreated() {
+        XCTAssertEqual(viewModel.getAlbumCount(), 10)
+        XCTAssertNotNil(viewModel.fetchAlbum(index: 0))
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testCacheObjectExists() {
+        XCTAssertNotNil(viewModel.getCache())
     }
-
+    
+    func testDecoding() throws {
+        let jsonPath = try XCTUnwrap(Bundle.main.path(forResource: "iTunesResultJSON", ofType: "json"))
+        let jsonPathURL = URL(fileURLWithPath: jsonPath)
+        let jsonData = try Data(contentsOf: jsonPathURL)
+        
+        XCTAssertNoThrow(try JSONDecoder().decode(iTunesResults.self, from: jsonData))
+    }
 }
