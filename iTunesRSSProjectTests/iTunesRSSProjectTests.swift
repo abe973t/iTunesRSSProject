@@ -14,16 +14,12 @@ class MockViewModel: ViewModelProtocol {
     private var albums: [Results]?
     
     init(urlString: String) {
-        if let url = URL(string: urlString) {
-            fetchTop100Albums(url: url)
-        }
+        fetchTop100Albums(url: URL(fileURLWithPath: urlString))
     }
     
     func fetchTop100Albums(url: URL) {
         NetworkingManager.shared.getAlbums(url: url) { (albums, err) in
-            if let error = err {
-                // TODO: create alert in view somehow
-            } else if let albumList = albums {
+            if let albumList = albums?.feed?.results {
                 self.albums = albumList
             }
         }
@@ -59,7 +55,10 @@ class iTunesRSSTests: XCTestCase {
     }
     
     func testAlbumsCreated() {
-        XCTAssertEqual(viewModel.getAlbumCount(), 10)
+        XCTAssertNotNil(viewModel.getAlbumCount())
+    }
+    
+    func testFetchAlbum() {
         XCTAssertNotNil(viewModel.fetchAlbum(index: 0))
     }
     

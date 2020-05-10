@@ -30,8 +30,9 @@ class ViewModel: ViewModelProtocol {
         NetworkingManager.shared.getAlbums(url: url) { (albums, err) in
             if let error = err {
                 // TODO: create alert in view somehow
-            } else if let albumList = albums {
+            } else if let albumList = albums?.feed?.results {
                 self.albums = albumList
+                NotificationCenter.default.post(name: .reload, object: nil)
             }
         }
     }

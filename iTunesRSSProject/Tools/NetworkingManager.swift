@@ -12,14 +12,14 @@ class NetworkingManager {
     private init() {}
     static let shared = NetworkingManager()
     
-    func getAlbums(url: URL, completion: @escaping ([Results]?, Error?) -> ()) {
+    func getAlbums(url: URL, completion: @escaping (iTunesResults?, Error?) -> ()) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
         if url.lastPathComponent == "iTunesResultJSON.json" {
             do {
                 let jsonData = try Data(contentsOf: url)
-                let object = try JSONDecoder().decode([Results].self, from: jsonData)
+                let object = try JSONDecoder().decode(iTunesResults.self, from: jsonData)
                 completion(object, nil)
             } catch {
                 print(error.localizedDescription)
@@ -33,7 +33,7 @@ class NetworkingManager {
             
             if let data = data {
                 do {
-                    let object = try JSONDecoder().decode([Results].self, from: data)
+                    let object = try JSONDecoder().decode(iTunesResults.self, from: data)
                     completion(object, nil)
                 } catch {
                     print(error.localizedDescription)
