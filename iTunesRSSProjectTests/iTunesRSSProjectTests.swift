@@ -58,6 +58,7 @@ class iTunesRSSTests: XCTestCase {
         viewModel = nil
     }
     
+    // MARK: - View Model Tests
     func testAlbumsCreated() {
         XCTAssertNotNil(viewModel.getAlbumCount())
     }
@@ -78,6 +79,7 @@ class iTunesRSSTests: XCTestCase {
         XCTAssertNoThrow(try JSONDecoder().decode(iTunesResults.self, from: jsonData))
     }
     
+    // MARK: - Album View Model Test
     func testAlbumViewModel() {
         if let album = viewModel.fetchAlbum(index: 0) {
             XCTAssertNotNil(album.fetchAlbumArtist())
@@ -92,7 +94,19 @@ class iTunesRSSTests: XCTestCase {
         }
     }
     
-    // MARK: - Network Layer Test
+    // MARK: - Network Layer Tests
+    func testGetAlbums() throws {
+        let path = try XCTUnwrap(Bundle.main.path(forResource: "iTunesResultJSON", ofType: "json"))
+        
+        NetworkingManager.shared.getAlbums(url: URL(fileURLWithPath: path)) { (results, err) in
+            if  let _ = err {
+                
+            } else {
+                XCTAssertNotNil(results)
+            }
+        }
+    }
+    
     func testGetImage() throws {
         let imgPath = try XCTUnwrap(Bundle.main.path(forResource: "nt3", ofType: "png"))
         
