@@ -47,12 +47,12 @@ class MainView: View {
         tblView.translatesAutoresizingMaskIntoConstraints = false
         return tblView
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addViews()
         
-        viewModel = ViewModel(urlString: Constants.rssEndpoint.rawValue)
+        createViewModel()
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -61,6 +61,10 @@ class MainView: View {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func createViewModel() {
+        viewModel = ViewModel(urlString: Constants.rssEndpoint.rawValue)
     }
     
     func addViews() {

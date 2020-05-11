@@ -12,6 +12,7 @@ class MainViewController: UIViewController {
         
     let mainView = MainView()
     
+    
     override func loadView() {
         view = mainView
     }
@@ -24,7 +25,9 @@ class MainViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(fetchError), name: .fetchError, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchError), name: .fetchImageError, object: nil)
         
+        mainView.createViewModel()
         mainView.controller = self
     }
     
@@ -36,7 +39,7 @@ class MainViewController: UIViewController {
     
     @objc func fetchError(_ notification: Notification) {
         DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: "Error", message: notification.object as? String ?? "Error fetching albums", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Error", message: notification.object as? String ?? "Error fetching content", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             self?.present(alert, animated: true, completion: nil)
         }

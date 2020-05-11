@@ -29,7 +29,7 @@ class ViewModel: ViewModelProtocol {
     func fetchTop100Albums(url: URL) {
         NetworkingManager.shared.getAlbums(url: url) { (albums, err) in
             if let error = err {
-                // TODO: create alert in view somehow
+                NotificationCenter.default.post(name: .fetchError, object: error.localizedDescription)
             } else if let albumList = albums?.feed?.results {
                 self.albums = albumList
                 NotificationCenter.default.post(name: .reload, object: nil)

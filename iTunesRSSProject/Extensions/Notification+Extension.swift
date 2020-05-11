@@ -11,4 +11,5 @@ import Foundation
 extension Notification.Name {
     static let reload = Notification.Name("reload")
     static let fetchError = Notification.Name("fetchError")
+    static let fetchImageError = Notification.Name("fetchImageError")
 }

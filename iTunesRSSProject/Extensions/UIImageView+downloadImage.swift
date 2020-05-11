@@ -15,7 +15,7 @@ extension UIImageView {
         } else if let url = URL(string: link) {
             NetworkingManager.shared.getImage(url: url) { (img, err) in
                 if let error = err {
-                    
+                    NotificationCenter.default.post(name: .fetchImageError, object: error.localizedDescription)
                 } else if let image = img {
                     DispatchQueue.main.async { [weak self] in
                         self?.contentMode = contentMode
