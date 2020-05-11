@@ -16,6 +16,10 @@
 		04A1633A2458CC93009DD48C /* iTunesRSSProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A163392458CC93009DD48C /* iTunesRSSProjectTests.swift */; };
 		04A1A1A0246314260074DDBE /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A1A19F246314260074DDBE /* MainView.swift */; };
 		04A28E0F2466F4770061DD14 /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A28E0E2466F4770061DD14 /* NetworkingManager.swift */; };
+		04A81B432469E53B00965C17 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A81B422469E53B00965C17 /* ImageCache.swift */; };
+		04A81B452469ECA100965C17 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A81B442469ECA100965C17 /* Feed.swift */; };
+		04A81B472469ECAC00965C17 /* Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A81B462469ECAC00965C17 /* Results.swift */; };
+		04AC34252469F1EB00BB6251 /* Genres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AC34242469F1EB00BB6251 /* Genres.swift */; };
 		04BC07942458D8300016C369 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC07912458D8300016C369 /* MainViewController.swift */; };
 		04BC07952458D8300016C369 /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC07922458D8300016C369 /* AlbumCell.swift */; };
 		04BC07962458D8300016C369 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC07932458D8300016C369 /* DetailViewController.swift */; };
@@ -66,6 +70,10 @@
 		04A1633B2458CC93009DD48C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04A1A19F246314260074DDBE /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		04A28E0E2466F4770061DD14 /* NetworkingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
+		04A81B422469E53B00965C17 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageCache.swift; path = iTunesRSSProject/Views/ImageCache.swift; sourceTree = SOURCE_ROOT; };
+		04A81B442469ECA100965C17 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
+		04A81B462469ECAC00965C17 /* Results.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Results.swift; sourceTree = "<group>"; };
+		04AC34242469F1EB00BB6251 /* Genres.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Genres.swift; sourceTree = "<group>"; };
 		04BC07912458D8300016C369 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		04BC07922458D8300016C369 /* AlbumCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
 		04BC07932458D8300016C369 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -163,6 +171,7 @@
 		04A28E102466F4B10061DD14 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				04A81B422469E53B00965C17 /* ImageCache.swift */,
 				04A28E0E2466F4770061DD14 /* NetworkingManager.swift */,
 			);
 			path = Tools;
@@ -194,6 +203,9 @@
 				04BC07992458D83B0016C369 /* nt3.png */,
 				04BC079C2458D83B0016C369 /* Constants.swift */,
 				04BC079B2458D83B0016C369 /* iTunesResults.swift */,
+				04A81B442469ECA100965C17 /* Feed.swift */,
+				04A81B462469ECAC00965C17 /* Results.swift */,
+				04AC34242469F1EB00BB6251 /* Genres.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -318,11 +330,15 @@
 			files = (
 				04BC07982458D8340016C369 /* ViewModel.swift in Sources */,
 				049120882463211900F648D4 /* DetailView.swift in Sources */,
+				04A81B432469E53B00965C17 /* ImageCache.swift in Sources */,
 				04BC07962458D8300016C369 /* DetailViewController.swift in Sources */,
 				04A28E0F2466F4770061DD14 /* NetworkingManager.swift in Sources */,
 				04BC07942458D8300016C369 /* MainViewController.swift in Sources */,
+				04A81B472469ECAC00965C17 /* Results.swift in Sources */,
 				04BC079D2458D83B0016C369 /* iTunesResults.swift in Sources */,
 				04BC07A22458D8450016C369 /* Notification+Extension.swift in Sources */,
+				04AC34252469F1EB00BB6251 /* Genres.swift in Sources */,
+				04A81B452469ECA100965C17 /* Feed.swift in Sources */,
 				04BC07952458D8300016C369 /* AlbumCell.swift in Sources */,
 				04BC07A12458D8450016C369 /* UIImageView+downloadImage.swift in Sources */,
 				04A1A1A0246314260074DDBE /* MainView.swift in Sources */,

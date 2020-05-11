@@ -97,6 +97,8 @@ class DetailView: View {
         releaseDateLabel.text = "Release Date: \(album.fetchAlbumReleaseDate() ?? "N/A")"
         copyrightLabel.text = "Copyright: \(album.fetchAlbumCopyright() ?? "N/A")"
         
+        let genres = album.fetchAlbumGenres()
+        
         if let genres = album.fetchAlbumGenres() {
             var text = "Genres: "
             

@@ -64,7 +64,7 @@ class MainView: View {
     }
     
     func createViewModel() {
-        viewModel = ViewModel(urlString: Constants.rssEndpoint.rawValue)
+        viewModel = ViewModel(urlString: Constants.rssEndpoint)
     }
     
     func addViews() {

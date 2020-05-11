@@ -60,10 +60,6 @@ class NetworkingManager {
                     completion(nil, error)
                 }
                 
-                if let response = response {
-                    print(response)
-                }
-                
                 if let data = data, let img = UIImage(data: data) {
                     completion(img, nil)
                 }

@@ -8,6 +8,6 @@
 
 import Foundation
 
-enum Constants: String {
-    case rssEndpoint = "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-albums/all/100/explicit.json"
+enum Constants {
+    static let rssEndpoint = "https://rss.itunes.apple.com/api/v1/us/itunes-music/top-albums/all/100/explicit.json"
 }

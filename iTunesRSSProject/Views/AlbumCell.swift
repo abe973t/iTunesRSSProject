@@ -49,10 +49,13 @@ class AlbumCell: UITableViewCell {
     }
 
     func addConstraints() {
+        let imgHeight = albumImg.heightAnchor.constraint(equalToConstant: 75)
+        imgHeight.priority = UILayoutPriority(999)
+        
         NSLayoutConstraint.activate([
+            imgHeight,
             albumImg.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             albumImg.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            albumImg.heightAnchor.constraint(equalToConstant: 75),
             albumImg.widthAnchor.constraint(equalToConstant: 75),
             albumImg.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
             
