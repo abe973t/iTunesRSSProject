@@ -44,14 +44,18 @@ class MockViewModel: ViewModelProtocol {
 
 class iTunesRSSTests: XCTestCase {
     
-    var viewModel: MockViewModel!
+    var viewModel: ViewModelProtocol!
     
     override func setUpWithError() throws {
-        viewModel = MockViewModel(urlString: Bundle.main.path(forResource: "iTunesResultJSON", ofType: "json")!)
+        if let path = Bundle.main.path(forResource: "iTunesResultJSON", ofType: "json") {
+            viewModel = MockViewModel(urlString: path)
+        } else {
+            XCTFail("Could not locate path to create viewModel")
+        }
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        viewModel = nil
     }
     
     func testAlbumsCreated() {
@@ -72,5 +76,32 @@ class iTunesRSSTests: XCTestCase {
         let jsonData = try Data(contentsOf: jsonPathURL)
         
         XCTAssertNoThrow(try JSONDecoder().decode(iTunesResults.self, from: jsonData))
+    }
+    
+    func testAlbumViewModel() {
+        if let album = viewModel.fetchAlbum(index: 0) {
+            XCTAssertNotNil(album.fetchAlbumArtist())
+            XCTAssertNotNil(album.fetchAlbumName())
+            XCTAssertNotNil(album.fetchAlbumGenres())
+            XCTAssertNotNil(album.fetchAlbumImgURL())
+            XCTAssertNotNil(album.fetchAlbumLinkURL())
+            XCTAssertNotNil(album.fetchAlbumCopyright())
+            XCTAssertNotNil(album.fetchAlbumReleaseDate())
+        } else {
+            XCTFail("Could not fetch album")
+        }
+    }
+    
+    // MARK: - Network Layer Test
+    func testGetImage() throws {
+        let imgPath = try XCTUnwrap(Bundle.main.path(forResource: "nt3", ofType: "png"))
+        
+        NetworkingManager.shared.getImage(url: URL(fileURLWithPath: imgPath)) { (img, err) in
+            if let _ = err {
+                XCTFail()
+            } else {
+                XCTAssertNotNil(img)
+            }
+        }
     }
 }
