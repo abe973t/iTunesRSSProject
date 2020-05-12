@@ -9,46 +9,39 @@
 import XCTest
 @testable import iTunesRSSProject
 
-class MockViewModel: ViewModelProtocol {
-    private var cache = NSCache<NSString, UIImage>()
-    private var albums: [Results]?
+class MockNetworkManager: NetworkingManagerProtocol {
     
-    init(urlString: String) {
-        fetchTop100Albums(url: URL(fileURLWithPath: urlString))
-    }
+    private init() {}
+    static let shared = MockNetworkManager()
     
-    func fetchTop100Albums(url: URL) {
-        NetworkingManager.shared.getAlbums(url: url) { (albums, err) in
-            if let albumList = albums?.feed?.results {
-                self.albums = albumList
-            }
+    func getAlbums(url: URL, completion: @escaping (iTunesResults?, Error?) -> ()) {
+        do {
+            let jsonData = try Data(contentsOf: url)
+            let object = try JSONDecoder().decode(iTunesResults.self, from: jsonData)
+            completion(object, nil)
+        } catch {
+            print(error.localizedDescription)
         }
     }
     
-    func fetchAlbum(index: Int) -> AlbumViewModel? {
-        if let album = albums?[index] {
-            return AlbumViewModel(album: album)
-        } else {
-            return nil
+    func getImage(url: URL, completion: @escaping (UIImage?, Error?) -> ()) {
+        do {
+            let jsonData = try Data(contentsOf: url)
+            let object = UIImage(data: jsonData)
+            completion(object, nil)
+        } catch {
+            completion(nil, error)
         }
-    }
-    
-    func getCache() -> NSCache<NSString, UIImage> {
-        return cache
-    }
-    
-    func getAlbumCount() -> Int? {
-        return albums?.count
     }
 }
 
 class iTunesRSSTests: XCTestCase {
     
-    var viewModel: ViewModelProtocol!
+    var viewModel: ViewModel!
     
     override func setUpWithError() throws {
         if let path = Bundle.main.path(forResource: "iTunesResultJSON", ofType: "json") {
-            viewModel = MockViewModel(urlString: path)
+            viewModel = ViewModel(session: MockNetworkManager.shared, url: URL(fileURLWithPath: path))
         } else {
             XCTFail("Could not locate path to create viewModel")
         }
@@ -60,15 +53,11 @@ class iTunesRSSTests: XCTestCase {
     
     // MARK: - View Model Tests
     func testAlbumsCreated() {
-        XCTAssertNotNil(viewModel.getAlbumCount())
+        XCTAssertTrue(viewModel.getAlbumCount() > 0)
     }
     
     func testFetchAlbum() {
         XCTAssertNotNil(viewModel.fetchAlbum(index: 0))
-    }
-    
-    func testCacheObjectExists() {
-        XCTAssertNotNil(viewModel.getCache())
     }
     
     func testDecoding() throws {
@@ -81,26 +70,23 @@ class iTunesRSSTests: XCTestCase {
     
     // MARK: - Album View Model Test
     func testAlbumViewModel() {
-        if let album = viewModel.fetchAlbum(index: 0) {
-            XCTAssertNotNil(album.fetchAlbumArtist())
-            XCTAssertNotNil(album.fetchAlbumName())
-            XCTAssertNotNil(album.fetchAlbumGenres())
-            XCTAssertNotNil(album.fetchAlbumImgURL())
-            XCTAssertNotNil(album.fetchAlbumLinkURL())
-            XCTAssertNotNil(album.fetchAlbumCopyright())
-            XCTAssertNotNil(album.fetchAlbumReleaseDate())
-        } else {
-            XCTFail("Could not fetch album")
-        }
+        let album = viewModel.fetchAlbum(index: 0)
+        XCTAssertNotNil(album.fetchAlbumArtist())
+        XCTAssertNotNil(album.fetchAlbumName())
+        XCTAssertNotNil(album.fetchAlbumGenres())
+        XCTAssertNotNil(album.fetchAlbumImgURL())
+        XCTAssertNotNil(album.fetchAlbumLinkURL())
+        XCTAssertNotNil(album.fetchAlbumCopyright())
+        XCTAssertNotNil(album.fetchAlbumReleaseDate())
     }
     
     // MARK: - Network Layer Tests
     func testGetAlbums() throws {
         let path = try XCTUnwrap(Bundle.main.path(forResource: "iTunesResultJSON", ofType: "json"))
         
-        NetworkingManager.shared.getAlbums(url: URL(fileURLWithPath: path)) { (results, err) in
-            if  let _ = err {
-                
+        MockNetworkManager.shared.getAlbums(url: URL(fileURLWithPath: path)) { (results, err) in
+            if let _ = err {
+                XCTFail()
             } else {
                 XCTAssertNotNil(results)
             }
@@ -110,7 +96,7 @@ class iTunesRSSTests: XCTestCase {
     func testGetImage() throws {
         let imgPath = try XCTUnwrap(Bundle.main.path(forResource: "nt3", ofType: "png"))
         
-        NetworkingManager.shared.getImage(url: URL(fileURLWithPath: imgPath)) { (img, err) in
+        MockNetworkManager.shared.getImage(url: URL(fileURLWithPath: imgPath)) { (img, err) in
             if let _ = err {
                 XCTFail()
             } else {

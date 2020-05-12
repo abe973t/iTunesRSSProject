@@ -9,8 +9,8 @@
 import UIKit
 
 extension UIImageView {
-    func downloadImageFrom(link: String, contentMode: UIView.ContentMode, cache: NSCache<NSString, UIImage>) {
-        if let cachedImg = cache.object(forKey: link as NSString) {
+    func downloadImageFrom(link: String, contentMode: UIView.ContentMode) {
+        if let cachedImg = ImageCache.shared.getImage(with: link) {
             self.image = cachedImg
         } else if let url = URL(string: link) {
             NetworkingManager.shared.getImage(url: url) { (img, err) in
@@ -20,7 +20,7 @@ extension UIImageView {
                     DispatchQueue.main.async { [weak self] in
                         self?.contentMode = contentMode
                         self?.image = image
-                        cache.setObject(image, forKey: link as NSString)
+                        ImageCache.shared.saveImage(with: link, image: image)
                     }
                 }
             }

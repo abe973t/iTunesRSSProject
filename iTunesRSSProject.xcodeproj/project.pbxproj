@@ -138,10 +138,10 @@
 				04A163222458CC8D009DD48C /* AppDelegate.swift */,
 				04A163242458CC8D009DD48C /* SceneDelegate.swift */,
 				049537FE246329E700BB9D8A /* Custom Classes */,
-				04A1A1A12463143F0074DDBE /* Controller */,
+				04A1A1A12463143F0074DDBE /* Controllers */,
 				04BC07A52458D8910016C369 /* Views */,
-				04BC07A62458D89C0016C369 /* View Model */,
-				04BC07A72458D8B40016C369 /* Model */,
+				04BC07A62458D89C0016C369 /* View Models */,
+				04BC07A72458D8B40016C369 /* Models */,
 				04BC07A82458D8BE0016C369 /* Extensions */,
 				04A28E102466F4B10061DD14 /* Tools */,
 				04A1632B2458CC93009DD48C /* Assets.xcassets */,
@@ -159,13 +159,13 @@
 			path = iTunesRSSProjectTests;
 			sourceTree = "<group>";
 		};
-		04A1A1A12463143F0074DDBE /* Controller */ = {
+		04A1A1A12463143F0074DDBE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				04BC07912458D8300016C369 /* MainViewController.swift */,
 				04BC07932458D8300016C369 /* DetailViewController.swift */,
 			);
-			path = Controller;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		04A28E102466F4B10061DD14 /* Tools */ = {
@@ -187,16 +187,16 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		04BC07A62458D89C0016C369 /* View Model */ = {
+		04BC07A62458D89C0016C369 /* View Models */ = {
 			isa = PBXGroup;
 			children = (
 				04BC07972458D8340016C369 /* ViewModel.swift */,
 				049538012463420C00BB9D8A /* AlbumViewModel.swift */,
 			);
-			path = "View Model";
+			path = "View Models";
 			sourceTree = "<group>";
 		};
-		04BC07A72458D8B40016C369 /* Model */ = {
+		04BC07A72458D8B40016C369 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				04BC079A2458D83B0016C369 /* iTunesResultJSON.json */,
@@ -207,7 +207,7 @@
 				04A81B462469ECAC00965C17 /* Results.swift */,
 				04AC34242469F1EB00BB6251 /* Genres.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		04BC07A82458D8BE0016C369 /* Extensions */ = {

@@ -10,7 +10,7 @@ import UIKit
 
 extension MainView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.getAlbumCount() ?? 0
+        return viewModel.getAlbumCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -18,23 +18,17 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         
-        if let album = viewModel.fetchAlbum(index: indexPath.row) {
-            cell.setup(album: album, cache: viewModel.getCache())
-        }
+        let album = viewModel.fetchAlbum(index: indexPath.row)
+        cell.setup(album: album)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let album = viewModel.fetchAlbum(index: indexPath.row) {
-            let dVC = DetailViewController()
-            dVC.detailView = DetailView(album: album, cache: viewModel.getCache())
-            controller?.navigationController?.pushViewController(dVC, animated: true)
-        } else {
-            let alert = UIAlertController(title: "Error", message: "Error fetching album", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-            controller?.present(alert, animated: true, completion: nil)
-        }
+        let album = viewModel.fetchAlbum(index: indexPath.row)
+        let dVC = DetailViewController()
+        dVC.detailView = DetailView(album: album)
+        controller?.navigationController?.pushViewController(dVC, animated: true)
     }
 }
 
@@ -64,7 +58,11 @@ class MainView: View {
     }
     
     func createViewModel() {
-        viewModel = ViewModel(urlString: Constants.rssEndpoint)
+        guard let url = URL(string: Constants.rssEndpoint) else {
+            return
+        }
+        
+        viewModel = ViewModel(session: NetworkingManager.shared, url: url)
     }
     
     func addViews() {

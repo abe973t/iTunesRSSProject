@@ -8,7 +8,12 @@
 
 import UIKit
 
-class NetworkingManager {
+protocol NetworkingManagerProtocol {
+    func getAlbums(url: URL, completion: @escaping (iTunesResults?, Error?) -> ())
+    func getImage(url: URL, completion: @escaping (UIImage?, Error?) -> ())
+}
+
+class NetworkingManager: NetworkingManagerProtocol {
     private init() {}
     static let shared = NetworkingManager()
     
@@ -16,54 +21,34 @@ class NetworkingManager {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        if url.lastPathComponent == "iTunesResultJSON.json" {
-            do {
-                let jsonData = try Data(contentsOf: url)
-                let object = try JSONDecoder().decode(iTunesResults.self, from: jsonData)
-                completion(object, nil)
-            } catch {
-                print(error.localizedDescription)
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(nil, error)
             }
-        } else {
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    completion(nil, error)
-                }
 
-                if let data = data {
-                    do {
-                       let object = try JSONDecoder().decode(iTunesResults.self, from: data)
-                       completion(object, nil)
-                    } catch {
-                       print(error.localizedDescription)
-                    }
+            if let data = data {
+                do {
+                   let object = try JSONDecoder().decode(iTunesResults.self, from: data)
+                   completion(object, nil)
+                } catch {
+                   print(error.localizedDescription)
                 }
-            }.resume()
-        }
+            }
+        }.resume()
     }
     
     func getImage(url: URL, completion: @escaping (UIImage?, Error?) -> ()) {
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
-        if url.lastPathComponent == "nt3.png" {
-            do {
-                let jsonData = try Data(contentsOf: url)
-                let object = UIImage(data: jsonData)
-                completion(object, nil)
-            } catch {
+       
+        URLSession.shared.dataTask(with: request) {data, response, error in
+            if let error = error {
                 completion(nil, error)
             }
-        } else {
-            URLSession.shared.dataTask(with: request) {data, response, error in
-                if let error = error {
-                    completion(nil, error)
-                }
-                
-                if let data = data, let img = UIImage(data: data) {
-                    completion(img, nil)
-                }
-            }.resume()
-        }
+            
+            if let data = data, let img = UIImage(data: data) {
+                completion(img, nil)
+            }
+        }.resume()
     }
 }

@@ -9,9 +9,8 @@
 import UIKit
 
 class DetailView: View {
-    
+        
     var album: AlbumViewModel!
-    var cache: NSCache<NSString, UIImage>!
         
     let albumImg: UIImageView = {
         let imgView = UIImageView()
@@ -78,11 +77,10 @@ class DetailView: View {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
-    init(album: AlbumViewModel, cache: NSCache<NSString, UIImage>) {
+    init(album: AlbumViewModel) {
         super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
         
         self.album = album
-        self.cache = cache
         backgroundColor = .white
     }
     
@@ -91,22 +89,16 @@ class DetailView: View {
     }
     
     func setupViews() {
-        albumImg.downloadImageFrom(link: album.fetchAlbumImgURL()?.absoluteString ?? "", contentMode: .scaleAspectFit, cache: cache)
+        albumImg.downloadImageFrom(link: album.fetchAlbumImgURL()?.absoluteString ?? "", contentMode: .scaleAspectFit)
         artistLabel.text = album.fetchAlbumArtist() ?? "Artist N/A"
         albumLabel.text = album.fetchAlbumName() ?? "Title N/A"
         releaseDateLabel.text = "Release Date: \(album.fetchAlbumReleaseDate() ?? "N/A")"
         copyrightLabel.text = "Copyright: \(album.fetchAlbumCopyright() ?? "N/A")"
-        
-        let genres = album.fetchAlbumGenres()
-        
+                
         if let genres = album.fetchAlbumGenres() {
-            var text = "Genres: "
+            let genreText = genres.reduce("Genre:") { $0 + " " + "\($1.name ?? " ")" }
             
-            for genre in genres {
-                text += "\(genre.name ?? "N/A")  "
-            }
-            
-            genreLabel.text = text
+            genreLabel.text = genreText
         }
         
         addViews()
@@ -129,7 +121,7 @@ class DetailView: View {
             albumImg.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             albumImg.leadingAnchor.constraint(equalTo: leadingAnchor),
             albumImg.trailingAnchor.constraint(equalTo: trailingAnchor),
-            albumImg.heightAnchor.constraint(equalToConstant: 400),
+            albumImg.heightAnchor.constraint(lessThanOrEqualToConstant: 400),
             
             albumLabel.topAnchor.constraint(equalTo: albumImg.bottomAnchor),
             albumLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -148,7 +140,7 @@ class DetailView: View {
             
             copyrightLabel.topAnchor.constraint(equalTo: releaseDateLabel.bottomAnchor, constant: 10),
             copyrightLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            copyrightLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            copyrightLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             
             genreLabel.topAnchor.constraint(equalTo: copyrightLabel.bottomAnchor, constant: 10),
             genreLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
