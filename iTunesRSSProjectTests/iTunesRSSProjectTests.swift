@@ -38,6 +38,7 @@ class MockNetworkManager: NetworkingManagerProtocol {
 class iTunesRSSTests: XCTestCase {
     
     var viewModel: ViewModel!
+    let cache = ImageCache.shared
     
     override func setUpWithError() throws {
         if let path = Bundle.main.path(forResource: "iTunesResultJSON", ofType: "json") {
@@ -104,4 +105,26 @@ class iTunesRSSTests: XCTestCase {
             }
         }
     }
+    
+    // MARK: - Image Cache Test
+    func testImageCache() throws {
+        let imgPath = try XCTUnwrap(Bundle.main.path(forResource: "nt3", ofType: "png"))
+        
+        MockNetworkManager.shared.getImage(url: URL(fileURLWithPath: imgPath)) { [weak self] (img, err) in
+            if let _ = err {
+                XCTFail()
+            } else if let image = img {
+                self?.cache.saveImage(with: "testImage", image: image)
+            }
+        }
+        
+        XCTAssertNotNil(cache.getImage(with: "testImage"))
+        XCTAssertNil(cache.getImage(with: "testImagel"))
+    }
+    
+//    func testUIImageExtension() {
+//        let image = UIImageView(frame: CGRect.zero)
+//        image.downloadImageFrom(link: "testImage", contentMode: .scaleAspectFit)
+//        XCTAssertNotNil(image.image)
+//    }
 }

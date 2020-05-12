@@ -9,6 +9,7 @@
 import Foundation
 
 struct AlbumViewModel {
+    
     private var album: Results
     
     init(album: Results) {

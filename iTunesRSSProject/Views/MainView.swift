@@ -19,7 +19,7 @@ extension MainView: UITableViewDataSource, UITableViewDelegate {
         }
         
         let album = viewModel.fetchAlbum(index: indexPath.row)
-        cell.setup(album: album)
+        cell.setup(with: album)
         
         return cell
     }

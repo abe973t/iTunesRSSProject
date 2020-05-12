@@ -23,6 +23,7 @@ class DetailView: View {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textAlignment = .center
+        lbl.numberOfLines = 0
         return lbl
     }()
     
@@ -38,6 +39,7 @@ class DetailView: View {
     let releaseDateLabel: UILabel = {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.numberOfLines = 0
         return lbl
     }()
     
@@ -45,7 +47,6 @@ class DetailView: View {
         let lbl = UILabel()
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.numberOfLines = 0
-        lbl.sizeToFit()
         return lbl
     }()
     
@@ -133,7 +134,7 @@ class DetailView: View {
             artistLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             artistLabel.heightAnchor.constraint(equalToConstant: 30),
             
-            releaseDateLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 20),
+            releaseDateLabel.topAnchor.constraint(equalTo: artistLabel.bottomAnchor, constant: 15),
             releaseDateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             releaseDateLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
             releaseDateLabel.heightAnchor.constraint(equalToConstant: 40),

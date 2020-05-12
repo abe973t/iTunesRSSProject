@@ -70,7 +70,7 @@ class AlbumCell: UITableViewCell {
         ])
     }
     
-    func setup(album: AlbumViewModel) {
+    func setup(with album: AlbumViewModel) {
         albumImg.downloadImageFrom(link: album.fetchAlbumImgURL()?.absoluteString ?? "", contentMode: .scaleAspectFit)
         albumLabel.text = album.fetchAlbumName() ?? "N/A"
         artistLabel.text = album.fetchAlbumArtist() ?? "N/A"
